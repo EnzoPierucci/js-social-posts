@@ -157,3 +157,33 @@ function formatDate(dateString) {
   }
   renderPosts(posts);
   
+
+let likedPosts = [];
+
+// Funzione per gestire il click sul bottone Mi Piace
+function toggleLike(postId) {
+    const likeButton = document.querySelector(`.js-like-button[data-postid="${postId}"]`);
+    const likesCounter = document.querySelector(`#like-counter-${postId}`);
+    let likes = parseInt(likesCounter.innerText);
+
+    if (likedPosts.includes(postId)) {
+        likes--;
+        likedPosts = likedPosts.filter(id => id !== postId);
+        likeButton.classList.remove('like-button--liked');
+    } else {
+        likes++;
+        likedPosts.push(postId);
+        likeButton.classList.add('like-button--liked');
+    }
+
+    likesCounter.innerText = likes;
+}
+
+document.querySelectorAll('.js-like-button').forEach(button => {
+    button.addEventListener('click', function(event) {
+        event.preventDefault();
+        const postId = parseInt(this.dataset.postid);
+        toggleLike(postId);
+    });
+});
+
