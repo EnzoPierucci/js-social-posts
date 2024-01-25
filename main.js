@@ -83,7 +83,7 @@ const posts = [
         authorName: "Din Din Alligan",
         authorImage: "https://unsplash.it/300/300?image=10",
         date: "09-03-2021",
-        text: "Questo è il testo del secondo post.",
+        text: "Questo è il testo del terzo post.",
         image: "https://unsplash.it/600/300?image=171",
         likes: 20
       },
@@ -93,9 +93,67 @@ const posts = [
         authorName: "Luigi Delle Bicocche",
         authorImage: "https://unsplash.it/300/300?image=10",
         date: "09-03-2021",
-        text: "Questo è il testo del secondo post.",
+        text: "Questo è il testo del quarto post.",
         image: "https://unsplash.it/600/300?image=171",
         likes: 1
       },  
   ];
+  
+
+  // Funzione per convertire la data in formato italiano
+function formatDate(dateString) {
+    const [mm, dd, yyyy] = dateString.split("-");
+    return `${dd}/${mm}/${yyyy}`;
+  }
+  
+  
+  
+  function createPostHtml(post) {
+    const postElement = document.createElement('div');
+    postElement.classList.add('post');
+    
+    
+    const profileImage = post.authorImage ? `<img class="profile-pic" src="${post.authorImage}" alt="${post.authorName}">` :
+      `<div class="profile-pic-default"><span>${createInitials(post.authorName)}</span></div>`;
+    
+    postElement.innerHTML = `
+      <div class="post__header">
+        <div class="post-meta">                    
+          <div class="post-meta__icon">
+            ${profileImage}                    
+          </div>
+          <div class="post-meta__data">
+            <div class="post-meta__author">${post.authorName}</div>
+            <div class="post-meta__time">${formatDate(post.date)}</div>
+          </div>                    
+        </div>
+      </div>
+      <div class="post__text">${post.text}</div>
+      ${post.image ? `<div class="post__image"><img src="${post.image}" alt=""></div>` : ''}
+      <div class="post__footer">
+        <div class="likes js-likes">
+          <div class="likes__cta">
+            <a class="like-button js-like-button" href="#" data-postid="${post.id}">
+              <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
+              <span class="like-button__label">Mi Piace</span>
+            </a>
+          </div>
+          <div class="likes__counter">
+            Piace a <b id="like-counter-${post.id}" class="js-likes-counter">${post.likes}</b> persone
+          </div>
+        </div> 
+      </div>            
+    `;
+    
+    return postElement;
+  }
+  
+  
+  function renderPosts(postsArray) {
+    const container = document.getElementById('container');
+    postsArray.forEach((post) => {
+      container.appendChild(createPostHtml(post));
+    });
+  }
+  renderPosts(posts);
   
